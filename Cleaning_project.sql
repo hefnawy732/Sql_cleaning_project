@@ -84,7 +84,7 @@ UPDATE cafe_sales_replica
 SET item = NULL
 WHERE item IN ('', 'ERROR', 'UNKNOWN');
 
-	/* 4.3 Pattern and nulls for 'payment_method', Checking if there's a complete record of the same row where item's value is valid
+	/* 4.3 Pattern and nulls for 'payment_method', Checking if there's a complete record of the same row where payment_method's value is valid
 	   We're running this to check if transaction_id was repeated
 	   We cannot exclude transaction_id and run comparison between rest of the columns, Because there's no customer_id, Nor datetime "Only date"
 	   So, even if there are duplicates across columns except 'payment_method'
@@ -107,7 +107,7 @@ UPDATE cafe_sales_replica
 SET payment_method = NULL
 WHERE payment_method IN ('', 'ERROR', 'UNKNOWN');
 
-	/* 4.5 Pattern and nulls for 'location', Checking if there's a complete record of the same row where item's value is valid
+	/* 4.5 Pattern and nulls for 'location', Checking if there's a complete record of the same row where location's value is valid
 	   We're running this to check if transaction_id was repeated
 	   We cannot exclude transaction_id and run comparison between rest of the columns, Because there's no customer_id, Nor datetime "Only date"
 	   So, even if there are duplicates across columns except 'location'
