@@ -184,10 +184,4 @@ SELECT *
 FROM cafe_sales_replica
 WHERE transaction_date > CURDATE();
 
-SELECT COUNT(*), quantity, item, price_per_unit, payment_method, location, transaction_date
-FROM cafe_sales_replica
-GROUP BY quantity, item, price_per_unit, payment_method, location, transaction_date
-HAVING COUNT(*) > 1;
-
-
 
