@@ -3,7 +3,7 @@
 ## Overview
 This project showcases the end-to-end cleaning of a raw cafe sales dataset using SQL. The data contained inconsistent column names, placeholder values like 'ERROR' or 'UNKNOWN', invalid data types, and logical inconsistencies in calculated fields.
 
-The goal was to transform this data into a clean, analysis-ready table suitable for dashboards and business insights.
+The goal was to transform this data into a clean, analysis-ready table suitable for exploratory analysis.
 
 ---
 
