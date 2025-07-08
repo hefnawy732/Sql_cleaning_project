@@ -70,8 +70,7 @@ GROUP BY 1;
 SELECT t1.item, t2.item
 FROM cafe_sales_replica t1
 JOIN cafe_sales_replica t2
-  ON t1.transaction_id = t2.transaction_id
- AND t1.quantity = t2.quantity
+  ON t1.quantity = t2.quantity
  AND t1.price_per_unit = t2.price_per_unit
  AND t1.total_spent = t2.total_spent
  AND t1.payment_method = t2.payment_method
@@ -106,8 +105,7 @@ GROUP BY 1;
 SELECT t1.payment_method, t2.payment_method
 FROM cafe_sales_replica t1
 JOIN cafe_sales_replica t2
-  ON t1.transaction_id = t2.transaction_id
-  AND t1.item = t2.item
+  ON t1.item = t2.item
  AND t1.quantity = t2.quantity
  AND t1.price_per_unit = t2.price_per_unit
  AND t1.total_spent = t2.total_spent
@@ -142,8 +140,7 @@ GROUP BY 1;
 SELECT t1.location, t2.location
 FROM cafe_sales_replica t1
 JOIN cafe_sales_replica t2
-  ON t1.transaction_id = t2.transaction_id
-  AND t1.item = t2.item
+  ON t1.item = t2.item
  AND t1.quantity = t2.quantity
  AND t1.price_per_unit = t2.price_per_unit
  AND t1.total_spent = t2.total_spent
