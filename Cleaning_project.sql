@@ -66,20 +66,15 @@ SELECT item, COUNT(*) as num_of_occurances
 FROM cafe_sales_replica
 GROUP BY 1;
 
-	-- 4.1 Pattern and nulls for 'item', Checking if there's a complete record of the same row where item's value is valid
-	-- Since the date we got is showing date only not datetime, Then we wouldn't be able to check duplicates of the row content aside from the PK
-	-- It might happen that on the same date, same location, same item is purchased in the same quantity etc and still counted as a distinct purchase
-	-- Hence, We're including transaction_id to make sure there's no duplicates in the row identifier
+	/* 4.1 Pattern and nulls for 'item', Checking if there's a complete record of the same row where item's value is valid
+	   We're running this to check if transaction_id was repeated
+	   We cannot exclude transaction_id and run comparison between rest of the columns, Because there's no customer_id, Nor datetime "Only date"
+	   So, even if there are duplicates across columns except 'Item'
+ 	   we cannot rely on that for imputation, as Muliple orders might share the exact same details on the same date normally */
 SELECT t1.item, t2.item
 FROM cafe_sales_replica t1
 JOIN cafe_sales_replica t2
   ON t1.transaction_id = t2.transaction_id
- AND t1.quantity = t2.quantity
- AND t1.price_per_unit = t2.price_per_unit
- AND t1.total_spent = t2.total_spent
- AND t1.payment_method = t2.payment_method
- AND t1.location = t2.location
- AND t1.transaction_date = t2.transaction_date
 WHERE 
   (
     t1.item IS NULL 
@@ -101,10 +96,12 @@ WHERE item = 'ERROR'
 OR item = 'UNKNOWN'
 OR item = '';
 
-	-- 4.3 Pattern and nulls for 'payment_method', Checking if there's a complete record of the same row where method's value is valid
-	-- Since the date we got is showing date only not datetime, Then we wouldn't be able to check duplicates of the row content aside from the PK
-	-- It might happen that on the same date, same location, same item is purchased in the same quantity etc and still counted as a distinct purchase
-	-- Hence, We're including transaction_id to make sure there's no duplicates in the row identifier
+	/* 4.3 Pattern and nulls for 'payment_method', Checking if there's a complete record of the same row where item's value is valid
+	   We're running this to check if transaction_id was repeated
+	   We cannot exclude transaction_id and run comparison between rest of the columns, Because there's no customer_id, Nor datetime "Only date"
+	   So, even if there are duplicates across columns except 'payment_method'
+ 	   we cannot rely on that for imputation, as Muliple orders might share the exact same details on the same date normally */
+
 SELECT payment_method, COUNT(*) as num_of_occurances
 FROM cafe_sales_replica
 GROUP BY 1;
@@ -113,12 +110,6 @@ SELECT t1.payment_method, t2.payment_method
 FROM cafe_sales_replica t1
 JOIN cafe_sales_replica t2
  ON t1.transaction_id = t2.transaction_id
- AND t1.item = t2.item
- AND t1.quantity = t2.quantity
- AND t1.price_per_unit = t2.price_per_unit
- AND t1.total_spent = t2.total_spent
- AND t1.location = t2.location
- AND t1.transaction_date = t2.transaction_date
 WHERE 
   (
     t1.payment_method IS NULL 
@@ -140,10 +131,12 @@ WHERE payment_method = 'ERROR'
 OR payment_method = 'UNKNOWN'
 OR payment_method = '';
 
-	-- 4.5 Pattern and nulls for 'location', Checking if there's a complete record of the same row where location's value is valid
-	-- Since the date we got is showing date only not datetime, Then we wouldn't be able to check duplicates of the row content aside from the PK
-	-- It might happen that on the same date, same location, same item is purchased in the same quantity etc and still counted as a distinct purchase
-	-- Hence, We're including transaction_id to make sure there's no duplicates in the row identifier
+	/* 4.5 Pattern and nulls for 'location', Checking if there's a complete record of the same row where item's value is valid
+	   We're running this to check if transaction_id was repeated
+	   We cannot exclude transaction_id and run comparison between rest of the columns, Because there's no customer_id, Nor datetime "Only date"
+	   So, even if there are duplicates across columns except 'location'
+ 	   we cannot rely on that for imputation, as Muliple orders might share the exact same details on the same date normally */
+
 SELECT location, COUNT(*) as num_of_occurances
 FROM cafe_sales_replica
 GROUP BY 1;
@@ -152,12 +145,6 @@ SELECT t1.location, t2.location
 FROM cafe_sales_replica t1
 JOIN cafe_sales_replica t2
  ON t1.transaction_id = t2.transaction_id
- AND t1.item = t2.item
- AND t1.quantity = t2.quantity
- AND t1.price_per_unit = t2.price_per_unit
- AND t1.total_spent = t2.total_spent
- AND t1.payment_method = t2.payment_method
- AND t1.transaction_date = t2.transaction_date
 WHERE 
   (
     t1.location IS NULL 
