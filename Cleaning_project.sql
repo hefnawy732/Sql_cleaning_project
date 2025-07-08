@@ -67,10 +67,14 @@ FROM cafe_sales_replica
 GROUP BY 1;
 
 	-- 4.1 Pattern and nulls for 'item', Checking if there's a complete record of the same row where item's value is valid
+	-- Since the date we got is showing date only not datetime, Then we wouldn't be able to check duplicates of the row content aside from the PK
+	-- It might happen that on the same date, same location, same item is purchased in the same quantity etc and still counted as a distinct purchase
+	-- Hence, We're including transaction_id to make sure there's no duplicates in the row identifier
 SELECT t1.item, t2.item
 FROM cafe_sales_replica t1
 JOIN cafe_sales_replica t2
-  ON t1.quantity = t2.quantity
+  ON t1.transaction_id = t2.transaction_id
+ AND t1.quantity = t2.quantity
  AND t1.price_per_unit = t2.price_per_unit
  AND t1.total_spent = t2.total_spent
  AND t1.payment_method = t2.payment_method
@@ -98,6 +102,9 @@ OR item = 'UNKNOWN'
 OR item = '';
 
 	-- 4.3 Pattern and nulls for 'payment_method', Checking if there's a complete record of the same row where method's value is valid
+	-- Since the date we got is showing date only not datetime, Then we wouldn't be able to check duplicates of the row content aside from the PK
+	-- It might happen that on the same date, same location, same item is purchased in the same quantity etc and still counted as a distinct purchase
+	-- Hence, We're including transaction_id to make sure there's no duplicates in the row identifier
 SELECT payment_method, COUNT(*) as num_of_occurances
 FROM cafe_sales_replica
 GROUP BY 1;
@@ -105,7 +112,8 @@ GROUP BY 1;
 SELECT t1.payment_method, t2.payment_method
 FROM cafe_sales_replica t1
 JOIN cafe_sales_replica t2
-  ON t1.item = t2.item
+ ON t1.transaction_id = t2.transaction_id
+ AND t1.item = t2.item
  AND t1.quantity = t2.quantity
  AND t1.price_per_unit = t2.price_per_unit
  AND t1.total_spent = t2.total_spent
@@ -132,7 +140,10 @@ WHERE payment_method = 'ERROR'
 OR payment_method = 'UNKNOWN'
 OR payment_method = '';
 
--- 4.5 Pattern and nulls for 'location', Checking if there's a complete record of the same row where location's value is valid
+	-- 4.5 Pattern and nulls for 'location', Checking if there's a complete record of the same row where location's value is valid
+	-- Since the date we got is showing date only not datetime, Then we wouldn't be able to check duplicates of the row content aside from the PK
+	-- It might happen that on the same date, same location, same item is purchased in the same quantity etc and still counted as a distinct purchase
+	-- Hence, We're including transaction_id to make sure there's no duplicates in the row identifier
 SELECT location, COUNT(*) as num_of_occurances
 FROM cafe_sales_replica
 GROUP BY 1;
@@ -140,7 +151,8 @@ GROUP BY 1;
 SELECT t1.location, t2.location
 FROM cafe_sales_replica t1
 JOIN cafe_sales_replica t2
-  ON t1.item = t2.item
+ ON t1.transaction_id = t2.transaction_id
+ AND t1.item = t2.item
  AND t1.quantity = t2.quantity
  AND t1.price_per_unit = t2.price_per_unit
  AND t1.total_spent = t2.total_spent
