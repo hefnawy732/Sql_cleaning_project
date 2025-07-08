@@ -76,25 +76,13 @@ FROM cafe_sales_replica t1
 JOIN cafe_sales_replica t2
   ON t1.transaction_id = t2.transaction_id
 WHERE 
-  (
-    t1.item IS NULL 
-    OR t1.item = '' 
-    OR t1.item = 'ERROR' 
-    OR t1.item = 'UNKNOWN'
-  )
-  AND (
-    t2.item IS NOT NULL 
-    AND t2.item != '' 
-    AND t2.item != 'ERROR' 
-    AND t2.item != 'UNKNOWN'
-  );
+    (t1.item IS NULL OR t1.item IN ('', 'ERROR', 'UNKNOWN'))
+  AND ( t2.item IS NOT NULL AND t2.item NOT IN ('', 'ERROR', 'UNKNOWN'));
 
 	-- 4.2 Pattern and nulls for 'item', No complete duplicates, We'd impute by null
 UPDATE cafe_sales_replica
 SET item = NULL
-WHERE item = 'ERROR'
-OR item = 'UNKNOWN'
-OR item = '';
+WHERE item IN ('', 'ERROR', 'UNKNOWN');
 
 	/* 4.3 Pattern and nulls for 'payment_method', Checking if there's a complete record of the same row where item's value is valid
 	   We're running this to check if transaction_id was repeated
@@ -111,25 +99,13 @@ FROM cafe_sales_replica t1
 JOIN cafe_sales_replica t2
  ON t1.transaction_id = t2.transaction_id
 WHERE 
-  (
-    t1.payment_method IS NULL 
-    OR t1.payment_method = '' 
-    OR t1.payment_method = 'ERROR' 
-    OR t1.payment_method = 'UNKNOWN'
-  )
-  AND (
-    t2.payment_method IS NOT NULL 
-    AND t2.payment_method != '' 
-    AND t2.payment_method != 'ERROR' 
-    AND t2.payment_method != 'UNKNOWN'
-  );
+    (t1.payment_method IS NULL OR t1.payment_method IN ('', 'ERROR', 'UNKNOWN'))
+  AND ( t2.payment_method IS NOT NULL AND t2.payment_method NOT IN ('', 'ERROR', 'UNKNOWN'));
 
 	-- 4.4 Pattern and nulls for 'payment_method', No complete duplicates, We'd impute by null
 UPDATE cafe_sales_replica
 SET payment_method = NULL
-WHERE payment_method = 'ERROR'
-OR payment_method = 'UNKNOWN'
-OR payment_method = '';
+WHERE payment_method IN ('', 'ERROR', 'UNKNOWN');
 
 	/* 4.5 Pattern and nulls for 'location', Checking if there's a complete record of the same row where item's value is valid
 	   We're running this to check if transaction_id was repeated
@@ -146,25 +122,13 @@ FROM cafe_sales_replica t1
 JOIN cafe_sales_replica t2
  ON t1.transaction_id = t2.transaction_id
 WHERE 
-  (
-    t1.location IS NULL 
-    OR t1.location = '' 
-    OR t1.location = 'ERROR' 
-    OR t1.location = 'UNKNOWN'
-  )
-  AND (
-    t2.location IS NOT NULL 
-    AND t2.location != '' 
-    AND t2.location != 'ERROR' 
-    AND t2.location != 'UNKNOWN'
-  );
+    (t1.location IS NULL OR t1.location IN ('', 'ERROR', 'UNKNOWN'))
+  AND ( t2.location IS NOT NULL AND t2.location NOT IN ('', 'ERROR', 'UNKNOWN'));
   
 	-- 4.6 Pattern and nulls for 'location', No complete duplicates, We'd impute by null
 UPDATE cafe_sales_replica
 SET location = NULL
-WHERE location = 'ERROR'
-OR location = 'UNKNOWN'
-OR location = '';
+WHERE location IN ('', 'ERROR', 'UNKNOWN');
 
 
 -- 5 Checking duplicates, transaction_id is unique and indeed the PK, no duplicates
